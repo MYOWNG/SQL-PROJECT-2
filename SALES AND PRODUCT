@@ -1,0 +1,126 @@
+# Sales & Products SQL Analysis
+
+## 📊 Project Overview
+
+This project showcases **intermediate-level SQL querying skills** by analyzing sales and product data stored in a relational database. The queries are designed to answer common **business and reporting questions** such as total sales volume, average pricing by category, daily revenue trends, high-performing products, sales classification, and price-based product segmentation.
+
+
+---
+
+## 🗂 Database Context
+
+**Database:** `task`
+
+### Tables Used
+
+* **sales** – contains transactional sales records
+* **products** – contains product details and pricing information
+
+---
+
+## 🧠 Business Questions & SQL Solutions
+
+### Question 1: Total products sold
+
+Calculates the total quantity of products sold across all transactions.
+
+```sql
+SELECT SUM(quantity) AS Total_product
+FROM sales;
+```
+
+---
+
+### Question 2: Average product price by category
+
+Finds the average price of products per category and orders the result from highest to lowest.
+
+```sql
+SELECT category, ROUND(AVG(price), 2) AS Avg_price
+FROM products
+GROUP BY category
+ORDER BY Avg_price DESC;
+```
+
+---
+
+### Question 3: Daily revenue analysis
+
+Computes total revenue per day by multiplying quantity and unit price.
+
+```sql
+SELECT sale_date,
+       ROUND(SUM(quantity * unit_price), 0) AS Daily_Revenue
+FROM sales
+GROUP BY sale_date
+ORDER BY sale_date;
+```
+
+---
+
+### Question 4: High-volume products
+
+Identifies products that have sold more than 10 units in total.
+
+```sql
+SELECT product_id,
+       SUM(quantity) AS Total_quantity
+FROM sales
+GROUP BY product_id
+HAVING Total_quantity > 10;
+```
+
+---
+
+### Question 5: Sales size classification
+
+Classifies each sale as **Large**, **Medium**, or **Low** based on quantity sold using a `CASE` statement.
+
+```sql
+SELECT sale_id,
+       quantity,
+       CASE
+         WHEN quantity >= 10 THEN 'Large Sales'
+         WHEN quantity BETWEEN 5 AND 9 THEN 'Medium Sales'
+         ELSE 'Low Sales'
+       END AS size_category
+FROM sales
+ORDER BY quantity DESC;
+```
+
+---
+
+### Question 6: Price-based product segmentation
+
+Segments products into price groups using a `UNION` operation.
+
+```sql
+SELECT product_name, category, 'Price > 100' AS price_group
+FROM products
+WHERE price > 100
+UNION
+SELECT product_name, category, 'Price < 50' AS price_group
+FROM products
+WHERE price < 50;
+```
+
+---
+
+## 🛠 SQL Concepts Demonstrated
+
+* Aggregate functions (`SUM`, `AVG`)
+* Grouping and filtering (`GROUP BY`, `HAVING`)
+* Conditional logic with `CASE`
+* Sorting results using `ORDER BY`
+* Combining result sets with `UNION`
+* Business-focused data analysis
+
+
+---
+
+## 💼 Author
+
+**Onome Otomewo**
+Aspiring Data Analyst | SQL | Excel | Power BI
+
+This project is part of my SQL portfolio demonstrating practical data analysis skills.
